@@ -5,35 +5,26 @@ import com.cesi.citamed.model.Erole;
 import com.cesi.citamed.model.RoleEntity;
 import com.cesi.citamed.model.UserEntity;
 import com.cesi.citamed.repositories.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.cesi.citamed.security.jwt.JwtUtils;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@RestController
-@CrossOrigin("*")
+@Controller
 public class PrincipalController {
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -41,8 +32,25 @@ public class PrincipalController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/createUser")
-    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
+    @GetMapping("/home")
+    public String home(){
+        return "home";
+    }
+
+    @GetMapping("/signup")
+    @PreAuthorize("permitAll()")
+    public String showUserForm(Model model) {
+        // Add an empty CreateUserDTO object to the model for Thymeleaf binding
+        model.addAttribute("createUserDTO", new CreateUserDTO());
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String createUser(@Valid @ModelAttribute CreateUserDTO createUserDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return "home";
+        }
+
         RoleEntity userRole = RoleEntity.builder()
                 .name(Erole.USER)
                 .build();
@@ -60,7 +68,19 @@ public class PrincipalController {
 
         userRepository.save(userEntity);
 
-        return ResponseEntity.ok(userEntity);
+        return "redirect:/home";
     }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String processLogin() {
+        return "home"; // Redirigir a la página de éxito después de la autenticación exitosa
+    }
+
+
 
 }

@@ -1,29 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <meta charset="UTF-8"/>
+    <title>User Form</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
-<h2>Login</h2>
-<p th:if="${loginSuccess}">Login exitedoso!</p>
-<form th:action="@{/login}" method="post">
-    <label for="email">Email:</label>
-    <input type="email"  id="email" name="email" required>
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <br>
-    <button type="submit">Login</button>
-</form>
+<div class="container" id="container">
+    <div class="form-container sign-up">
+        <form method="post">
+            <h1>Crear una cuenta</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg></a>
+                <a href="#" class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg></a>
+            </div>
+            <span>o usa ingrese su correo y contraseña para registrarse</span>
+            <input type="text"  placeholder="Nombre">
+            <input type="text"  placeholder="Apellido">
+            <input type="email"  placeholder="Email">
+            <input type="password"   placeholder="Password">
+            <button>Registrarse</button>
+        </form>
+    </div>
+    <div class="form-container sign-in">
+        <form th:action="@{/login}" method="post">
+            <h1>Iniciar sesión</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg></a>
+                <a href="#" class="icon"><svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg></a>
+            </div>
+            <span>o usa tu correo y contraseña</span>
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Password">
+            <a href="#">Olvidaste tu contraseña?</a>
+            <button>Iniciar sesión</button>
+        </form>
+    </div>
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <h1>¡Bienvenido de nuevo!</h1>
+                <p>Ingrese sus datos personales para utilizar todas las funciones del sitio</p>
+                <button class="hidden" id="login">Iniciar sesión</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1>¡Hola!</h1>
+                <p>Regístrese con sus datos personales para utilizar todas las funciones del sitio</p>
+                <button class="hidden" id="register">Registrarse</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<script>
-    // Obtener el token de la respuesta
-    const token = "${token}";
 
-    // Guardar el token en el local storage
-    localStorage.setItem("token", token);
-</script>
+
+<script th:src="@{/js/userForm.js}"></script>
 </body>
 </html>

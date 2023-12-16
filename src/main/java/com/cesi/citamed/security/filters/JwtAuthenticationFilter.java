@@ -9,12 +9,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -32,27 +34,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-
-        UserEntity userEntity = null;
-        String username = "";
-        String password = "";
-        try{
-            userEntity = new ObjectMapper().readValue(request.getInputStream(), UserEntity.class);
-            username = userEntity.getEmail();
-            password = userEntity.getPassword();
-        } catch (StreamReadException e) {
-            throw new RuntimeException(e);
-        } catch (DatabindException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
+                new UsernamePasswordAuthenticationToken(email, password);
+
 
         return getAuthenticationManager().authenticate(authenticationToken);
     }
+
+
+    private RedirectStrategy redirectStrategy;
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
@@ -64,10 +57,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = jwtUtils.generateAccesToken(user.getUsername());
 
         response.addHeader("Authorization", token);
-
         Map<String, Object> httpResponse = new HashMap<>();
         httpResponse.put("token", token);
-        httpResponse.put("Message", "Autenticacion Correcta");
+        httpResponse.put("Message", "Autenticacion correcta qlq");
         httpResponse.put("Username", user.getUsername());
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
@@ -75,8 +67,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().flush();
 
+        // Redirige a la ruta deseada después de la autenticación exitosa
+        redirectStrategy.sendRedirect(request, response, "/home");
+
         super.successfulAuthentication(request, response, chain, authResult);
     }
-
 
 }

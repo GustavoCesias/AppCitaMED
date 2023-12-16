@@ -7,6 +7,7 @@ import com.cesi.citamed.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -39,6 +40,9 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(config -> config.disable())
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.GET, "/", "/login", "/error", "/login-error", "/logout",
+                            "/css/**", "/js/**", "/image/**",  "/home", "/xd", "/createUser", "/userForm", "/signup" ).permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/createUser", "/login", "/signup").permitAll();
                     auth.requestMatchers("/hello").permitAll();
                     auth.requestMatchers("/createUser").permitAll();
                     auth.requestMatchers("/userForm").permitAll();
