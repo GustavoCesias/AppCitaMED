@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CitaMed</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+<div class="container">
+    <nav>
+        <div class="nav__logo">CITAMED</div>
+        <ul class="nav__links">
+            <li class="link"><a href="#">Nosotros</a></li>
+            <li class="link"><a href="#">Servicios</a></li>
+            <li class="link"><a href="#">Especialidades</a></li>
+            <li class="link"><a href="#">Medicos</a></li>
+            <li class="link"><a href="#">Blog</a></li>
+            <li class="link"><a href="#">Contacto</a></li>
+        </ul>
+        <button class="btn">Regístrate</button>
+        <button class="btn">Ingresa</button>
+    </nav>
+    <header class="header">
+        <div class="content">
+            <h1><span>Obtén Servicios</span><br />Médicos Al Instante</h1>
+            <p>
+                En el mundo acelerado de hoy, tener acceso a servicios médicos
+                rápidos y eficientes es de suma importancia. Cuando te encuentras
+                en una emergencia médica o necesitas atención médica inmediata, la
+                capacidad de recibir servicios médicos de manera rápida puede tener
+                un impacto significativo en el resultado de la situación.
+            </p>
+            <button class="btn">Obtener Servicios</button>
+        </div>
+        <div class="image">
+            <span class="image__bg"></span>
+            <img th:src="@{/image/header-bg.png}" alt="header image" />
+            <div class="image__content image__content__1">
+                <span><i class="ri-user-3-line"></i></span>
+                <div class="details">
+                    <h4>1520+</h4>
+                    <p>Clientes Activos</p>
+                </div>
+            </div>
+            <div class="image__content image__content__2">
+                <ul>
+                    <li>
+                        <span><i class="ri-check-line"></i></span>
+                        Obtenga 20% de descuento es su primer mes
+                    </li>
+                    <li>
+                        <span><i class="ri-check-line"></i></span>
+                        Médicos expertos
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+</html>
